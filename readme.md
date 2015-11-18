@@ -192,7 +192,7 @@ And if everything works you should get back a response like this
 
 In order to test, deploy it your server that sinch can access, make a test request to make sure you still get the correct SVAML response. Then dial in!
 
-More resources:
-Sinch REST documentation: https://www.sinch.com/docs/voice/rest/
-Conferencing system in .net: https://www.sinch.com/tutorials/building-a-conferencing-system/
-Hosting node on azure: https://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-develop-deploy-mac/
+###More resources:
+- Sinch REST documentation: https://www.sinch.com/docs/voice/rest/
+- Conferencing system in .net: https://www.sinch.com/tutorials/building-a-conferencing-system/
+- Hosting node on azure: https://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-develop-deploy-mac/
