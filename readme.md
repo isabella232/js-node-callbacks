@@ -1,7 +1,7 @@
 # Creating a hot line using Node/Express and Sinch
 
-in this tutorial we are going to create a very simple conference app where you anyone can call in to a number and be connected. A little bit like the carriers hotlines back in the day (maybe they still exist, any one know?). 
-This will take you approx 15 min to finish
+In this tutorial we are going to create a very simple conference app where you can call in to a number and be connected to anyone. A little bit like the carrier hotlines back in the day (maybe they still exist, any one know?). 
+This will take you approx. 15 min to finish.
 
 ## Setup
 1. A [Sinch account](https://www.sinch.com/signup) and an app with keys 
@@ -20,13 +20,13 @@ So now I have an app that as soon as someone dials +14153493281 will make a call
 
 ## Create a node app
 As I mentioned before, this is going to be a super simple implementation where everyone will be connected to the conference no questions asked. 
-Lets start creatign a node app, open a powershell or terminal and create a folder to host your app. 
+Let's start creating a node app, open a powershell or terminal and create a folder to host your app. 
 ```powershell
 npm init
 npm install express -save
 npm install body-parser -save
 ```
-This creates a packages.json file and install express depenency [http://expressjs.com/](http://expressjs.com/) the reason for using express apart from that its popular is it has some nice json extensions and I like mvc frameworks as an organisation for webapps. With that said open up your favorite text editor, I am using VS Code, awesome tool with debug and really nice intellisense, enough MS plugs for now ;). Open up packages.json and change main to app.js. 
+This creates a packages.json file and install express dependency [http://expressjs.com/](http://expressjs.com/) the reason for using express apart from it being popular, is it has some nice json extensions and I like mvc frameworks as an organisation for webapps. With that said open up your favorite text editor, I am using VS Code, awesome tool with debug and really nice intellisense, enough MS plugs for now ;). Open up packages.json and change main to app.js. 
 
 ```javascript
 {
@@ -75,7 +75,7 @@ module.exports = app;
 app.listen(port);
 ```
 
-Nothing strange here, just some basic express setup of an app. note that now we dont respond to anything, yet. Create a folder and callit routes and add a file sinch.js to it. This will be our route to handle posts from the sinch backend.
+Nothing strange here, just some basic express setup of an app. Note that now we don't respond to anything, yet. Create a folder and call it routes and add a file sinch.js to it. This will be our route to handle posts from the sinch backend.
 **sinch.js**
 ```javascript
 // add requires
@@ -89,12 +89,12 @@ router.post('/', function (req, res, next) {
 module.exports = router;
 ```
 
-The only thing this router does at the moment is to echo what ever your post in to sinch. Try it out and make sure it works. I am using Postman to create my day to day testing. 
+The only thing this router does at the moment is to echo whatever you post in to sinch. Try it out and make sure it works. I am using Postman to create my day to day testing. 
 ![](images/postman_hello.png)
 
 ## Add Sinch funcationality. 
-As mentioned before as soon as someone calls in on a the phonenumber sinch will make a call back to my backend and I can respond with what we call SVAML, General information about our rest API's can be found [here](https://www.sinch.com/docs/voice/rest/) and for this tutorial we are particularly interested in the [ICE](https://www.sinch.com/docs/voice/rest/#ICE) event. 
-So when ever someone calls in I want to connect them to my conference with their caller id. So Reading the docs, I see that if to connect to a conference (which is infact exactly what a hot line is) I just need to respond this:
+As mentioned before as soon as someone calls in on a the phone number sinch will make a call back to my backend and I can respond with what we call SVAML, General information about our rest API's can be found [here](https://www.sinch.com/docs/voice/rest/) and for this tutorial we are particularly interested in the [ICE](https://www.sinch.com/docs/voice/rest/#ICE) event. 
+So whenever someone calls in I want to connect them to my conference with their caller id. So reading the docs, I see that if to connect to a conference (which is in fact exactly what a hot line is) I just need to respond this:
 
 ```javascript
 {
