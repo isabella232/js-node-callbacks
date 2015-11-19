@@ -1,32 +1,47 @@
-# Creating a hot line using Node/Express and Sinch
+# Creating a hotline using Node/Express and Sinch
 
-In this tutorial we are going to create a very simple conference app where you can call in to a number and be connected to anyone. A little bit like the carrier hotlines back in the day (maybe they still exist, any one know?). 
-This will take you approx. 15 min to finish.
+In this tutorial we are going to create a very simple conference calling app where you can call in to a number and be connected to anyone. A little bit like the carrier hotlines back in the day (maybe they still exist, any one know?). 
+
+This tutorial will take approx. 15 min to finish.
 
 ## Setup
+To get started, you will need:
+
 1. A [Sinch account](https://www.sinch.com/signup) and an app with keys 
 2. A phone number [rented from Sinch] (https://www.sinch.com/dashboard/#/numbers); make sure it’s a voice number
-3. A place to host your backend, I am hosting my app on azure for free
+3. A place to host your backend, I am hosting my app on Azure for free
 
 ## Rent a number
-Go to your dashboard an rent a number 
-![](images/rentnumber1.png)
-![](images/rentnumber2.png)
-AFter your rented a number you need to configure your app, if you dont have just create a new one. 
-![](images/rentnumber_callback.png)
-For this tutorial the endpoint for callbacks will be http://yourserver/sinch so make sure you have a place to host and configure your callback to that address.
+Go to your dashboard, and click on numbers. Then click on the "Rent Numbers" button.
 
-So now I have an app that as soon as someone dials +14153493281 will make a callback to my url, since I have nothing there now the call will just hangup.
+![renting a Sinch number](images/rentnumber1.png)
+
+Then, pick a local number you will be calling in to.
+
+![pick a location](images/rentnumber2.png)
+
+After your rented a number you need to configure your app. If you dont have one, just create a new one. 
+
+![setting a callback](images/rentnumber_callback.png)
+
+For this tutorial the endpoint for callbacks will be `http://yourserver/sinch` so make sure you have a place to host and configure your callback to that address.
+
+So now I have an app that as soon as someone dials **+14153493281** will make a callback to my URL. Because I have nothing there right now, the call will just hangup.
 
 ## Create a node app
-As I mentioned before, this is going to be a super simple implementation where everyone will be connected to the conference no questions asked. 
-Let's start creating a node app, open a powershell or terminal and create a folder to host your app. 
+As I mentioned before, this is going to be a super simple implementation where everyone will be connected to the conference, no questions asked. 
+
+Let's start creating a node app. Open a powershell or terminal and create a folder to host your app. 
+
 ```powershell
 npm init
 npm install express -save
 npm install body-parser -save
 ```
-This creates a packages.json file and install express dependency [http://expressjs.com/](http://expressjs.com/) the reason for using express apart from it being popular, is it has some nice json extensions and I like mvc frameworks as an organisation for webapps. With that said open up your favorite text editor, I am using VS Code, awesome tool with debug and really nice intellisense, enough MS plugs for now ;). Open up packages.json and change main to app.js. 
+
+This creates a **packages.json** file and installs a [**express** dependency](http://expressjs.com/). The reason for using express apart from it being popular, is it has some nice json extensions and I like MVC frameworks as an organisation for web apps. Open up your favorite text editor. I am using Visual Studio Code which is an awesome tool with a good debug feature and really nice intellisense. Open up **packages.json** and change **main** to **app.js**. 
+
+**packages.json**
 
 ```javascript
 {
@@ -45,8 +60,10 @@ This creates a packages.json file and install express dependency [http://express
 }
 
 ```
-Next create app.js in the root folder, and start coding 
+Next create a file called **app.js** in the root folder, and start coding:
+
 **app.js**
+
 ```javascript
 // add requires
 var express = require('express');
@@ -75,8 +92,10 @@ module.exports = app;
 app.listen(port);
 ```
 
-Nothing strange here, just some basic express setup of an app. Note that now we don't respond to anything, yet. Create a folder and call it routes and add a file sinch.js to it. This will be our route to handle posts from the sinch backend.
+Nothing strange here, just some basic express setup of an app. Note that now we don't respond to anything...yet. Create a folder and call it **routes** and add a file called **sinch.js** to it. This will be our route to handle posts from the sinch backend.
+
 **sinch.js**
+
 ```javascript
 // add requires
 var express = require('express');
@@ -89,12 +108,16 @@ router.post('/', function (req, res, next) {
 module.exports = router;
 ```
 
-The only thing this router does at the moment is to echo whatever you post in to sinch. Try it out and make sure it works. I am using Postman to create my day to day testing. 
-![](images/postman_hello.png)
+The only thing this router does at the moment is to echo whatever you post in to Sinch. Try it out and make sure it works. I am using Postman to create my day to day testing. 
+
+![postman](images/postman_hello.png)
 
 ## Add Sinch funcationality. 
-As mentioned before as soon as someone calls in on a the phone number sinch will make a call back to my backend and I can respond with what we call SVAML, General information about our rest API's can be found [here](https://www.sinch.com/docs/voice/rest/) and for this tutorial we are particularly interested in the [ICE](https://www.sinch.com/docs/voice/rest/#ICE) event. 
-So whenever someone calls in I want to connect them to my conference with their caller id. So reading the docs, I see that if to connect to a conference (which is in fact exactly what a hot line is) I just need to respond this:
+As mentioned before, as soon as someone calls in on a the phone number, Sinch will make a callback to my backend and I can respond with what we call **SVAML**. More information about our REST API's can be found [here](https://www.sinch.com/docs/voice/rest/) and for this tutorial we are particularly interested in the [ICE event](https://www.sinch.com/docs/voice/rest/#ICE). 
+
+Whenever someone calls in I want to connect them to my conference with their caller ID. So reading the docs, I see that if to connect to a conference (which is in fact exactly what a hotline is), I just need to respond with this:
+
+**Conference Response**
 
 ```javascript
 {
@@ -105,7 +128,11 @@ So whenever someone calls in I want to connect them to my conference with their 
     }
 }
 ```
+
 But I also wanted to spice it up and welcome the caller with a text to speech command in the instructions parameters.
+
+**Welcome Message**
+
 ```javascript
 {
     "name" : "Say",
@@ -114,7 +141,9 @@ But I also wanted to spice it up and welcome the caller with a text to speech co
 }
 ```
 
-In sinch.js just below var router
+In **sinch.js** just below `var router` add the SVAML code.
+
+**SVAML Response**
 
 ```javascript
 var svamlResponse =
@@ -135,7 +164,10 @@ var svamlResponse =
 	}
 
 ```
-You might notice that I added supressCallbacks, this is because in this case I dont want any more callbacks after the ICE event. So to connect to the conference we need to change the the router.post to this
+
+You might notice that I added **supressCallbacks**, and this is because in this case I don't want any more callbacks after the ICE event. So to connect to the conference, we need to change the the **router.post** to this
+
+**router.post**
 
 ```javascript
 router.post('/', function (req, res, next) {
@@ -147,8 +179,10 @@ router.post('/', function (req, res, next) {
 });
 ```
 
-Fire it up localy and try and send this fake incoming body to your controller in post man
-fake request
+Fire it up localy and try and send this fake incoming body to your controller in Postman
+
+**Fake Request**
+
 ```
 {
    "event":"ice",
@@ -170,8 +204,11 @@ fake request
    "originationType":"PSTN"
 }
 ```
-And if everything works you should get back a response like this
-**response**
+
+And if everything works you should get back a response like this:
+
+**Response**
+
 ```javascript
 {
   "instructions": [
@@ -190,9 +227,10 @@ And if everything works you should get back a response like this
 }
 ```
 
-In order to test, deploy it your server that sinch can access, make a test request to make sure you still get the correct SVAML response. Then dial in!
+In order to test this out, deploy it your server that Sinch can access and make a test request to make sure you still get the correct SVAML response. Then dial in!
 
-###More resources:
-- Sinch REST documentation: https://www.sinch.com/docs/voice/rest/
-- Conferencing system in .net: https://www.sinch.com/tutorials/building-a-conferencing-system/
-- Hosting node on azure: https://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-develop-deploy-mac/
+##More resources:
+
+* [Sinch REST Documentation](https://www.sinch.com/docs/voice/rest/)
+* [Building a Conference Calling System in .NET](https://www.sinch.com/tutorials/building-a-conferencing-system/)
+* [Hosting node on Azure](https://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-develop-deploy-mac/)
