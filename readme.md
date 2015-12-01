@@ -18,7 +18,7 @@ Go to your dashboard, and click on numbers. Then click on the "Rent Numbers" but
 
 Then, pick a local number you will be calling in to.
 
-![pick a location](images/rentnumber2.png)
+![pick a location](images/rentnumber3.jpg)
 
 After your rented a number you need to configure your app. If you dont have one, just create a new one. 
 

@@ -4,12 +4,12 @@
   "engines": {
     "node": "5.0.0"
   },
-  "description": "",
+  "description": "A simple conference calling app using Sinch, Node.js, and Express.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Christian Jensen and Sinch",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.1",
