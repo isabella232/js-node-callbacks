@@ -115,7 +115,7 @@ The only thing this router does at the moment is to echo whatever you post in to
 ## Add Sinch funcationality. 
 As mentioned before, as soon as someone calls in on a the phone number, Sinch will make a callback to my backend and I can respond with what we call **SVAML**. More information about our REST API's can be found [here](https://www.sinch.com/docs/voice/rest/) and for this tutorial we are particularly interested in the [ICE event](https://www.sinch.com/docs/voice/rest/#ICE). 
 
-Whenever someone calls in I want to connect them to my conference with their caller ID. So reading the docs, I see that if to connect to a conference (which is in fact exactly what a hotline is), I just need to respond with this:
+Whenever someone calls in, I want to connect them to my conference with their caller ID. So reading the docs, I see that to connect to a conference (which is in fact exactly what a hotline is), I just need to respond with this:
 
 **Conference Response**
 
@@ -179,7 +179,7 @@ router.post('/', function (req, res, next) {
 });
 ```
 
-Fire it up localy and try and send this fake incoming body to your controller in Postman
+Fire it up localy and try and send this fake incoming body to your controller in Postman.
 
 **Fake Request**
 
@@ -230,6 +230,10 @@ And if everything works you should get back a response like this:
 In order to test this out, deploy it your server that Sinch can access and make a test request to make sure you still get the correct SVAML response. Then dial in!
 
 ##More resources:
+
+I hope you enjoyed this tutorial and if you have any questions, please add a comment or contact us via our [support page](https://www.sinch.com/support/).
+
+If you want to continue building a conference calling app, take a look at the other resources we have:
 
 * [Sinch REST Documentation](https://www.sinch.com/docs/voice/rest/)
 * [Building a Conference Calling System in .NET](https://www.sinch.com/tutorials/building-a-conferencing-system/)
