@@ -1,4 +1,4 @@
-# Build a Conferencing Calling App in Node.js & Express
+# Build a Conference Calling App in Node.js & Express
 
 In this tutorial we are going to create a very simple conference calling app where you can call in to a number and be connected to anyone. A little bit like the carrier hotlines back in the day (maybe they still exist, any one know?). 
 
